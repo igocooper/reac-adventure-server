@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Weapon {
+  id       Int          @id @default(autoincrement())
+  name     String       @unique
+  imageSrc String
+  stats    WeaponStats?
+}
+
+model WeaponStats {
+  id                  Int    @id @default(autoincrement())
+  damage              String
+  hitChance           Float?
+  power               Float?
+  criticalChance      Float?
+  criticalMultiplier  Float?
+  counterAttackChance Float?
+
+  // Relational fields
+  weaponId Int    @unique
+  weapon   Weapon @relation(fields: [weaponId], references: [id])
+}
+
+enum HelmetType {
+  FULL_FACE
+  LARGE
+  MEDIUM
+  SMALL
+}
+
+model Helmet {
+  id       Int          @id @default(autoincrement())
+  name     String       @unique
+  type     HelmetType
+  large    Boolean?     @default(false)
+  imageSrc String
+  stats    HelmetStats?
+}
+
+model HelmetStats {
+  id                  Int    @id @default(autoincrement())
+  defence             Int
+  evadeChance         Float?
+  criticalChance      Float?
+  counterAttackChance Float?
+
+  // Relational fields
+  helmetId Int    @unique
+  helmet   Helmet @relation(fields: [helmetId], references: [id])
+}
+
+model Armor {
+  id        Int             @id @default(autoincrement())
+  name      String          @unique
+  stats     ArmorStats?
+  imageUrls ArmorImageUrls?
+}
+
+model ArmorImageUrls {
+  id        Int     @id @default(autoincrement())
+  body      String
+  leftArm   String?
+  leftHand  String?
+  leftLeg   String
+  rightArm  String?
+  rightHand String?
+  rightLeg  String
+
+  // Relational fields
+  armorId Int   @unique
+  armor   Armor @relation(fields: [armorId], references: [id])
+}
+
+model ArmorStats {
+  id                  Int    @id @default(autoincrement())
+  defence             Int
+  evadeChance         Float?
+  criticalChance      Float?
+  counterAttackChance Float?
+
+  // Relational fields
+  armorId Int   @unique
+  armor   Armor @relation(fields: [armorId], references: [id])
+}
+
+model Shield {
+  id       Int          @id @default(autoincrement())
+  name     String       @unique
+  imageSrc String
+  stats    ShieldStats?
+}
+
+model ShieldStats {
+  id                  Int    @id @default(autoincrement())
+  defence             Int
+  evadeChance         Float?
+  criticalChance      Float?
+  counterAttackChance Float?
+
+  // Relational fields
+  shieldId Int    @unique
+  shield   Shield @relation(fields: [shieldId], references: [id])
+}
+
+model Bow {
+  id        Int           @id @default(autoincrement())
+  name      String        @unique
+  imageUrls BowImageUrls?
+  stats     BowStats?
+}
+
+model BowImageUrls {
+  id             Int    @id @default(autoincrement())
+  bowStem        String
+  bowString      String
+  drawnBowString String
+  quiver         String
+  arrow          String
+
+  // Relational fields
+  bowId Int @unique
+  bow   Bow @relation(fields: [bowId], references: [id])
+}
+
+model BowStats {
+  id                  Int    @id @default(autoincrement())
+  damage              String
+  hitChance           Float?
+  power               Float?
+  criticalChance      Float?
+  criticalMultiplier  Float?
+  counterAttackChance Float?
+
+  // Relational fields
+  bowId Int @unique
+  bow   Bow @relation(fields: [bowId], references: [id])
+}
