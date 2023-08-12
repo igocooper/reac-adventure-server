@@ -1,4 +1,4 @@
-# reac-adventure-server
+# react-adventure-server
 
 Server part of React adventure game
 

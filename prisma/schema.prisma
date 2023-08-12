@@ -170,7 +170,7 @@ model Resistance {
   dark        Float?
   poison      Float?
   blood       Float?
-  ArmorStats  ArmorStats?
-  HelmetStats HelmetStats?
-  ShieldStats ShieldStats?
+  armorStats  ArmorStats?
+  helmetStats HelmetStats?
+  shieldStats ShieldStats?
 }

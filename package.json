@@ -1,5 +1,5 @@
 {
-  "name": "prisma-class",
+  "name": "react-adventure-server",
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
@@ -25,7 +25,7 @@
     "ts-jest": "27.0.7",
     "ts-node": "^10.4.0",
     "ts-node-dev": "1.1.8",
-    "typescript": "^4.3.5",
+    "typescript": "4.3.5",
     "prettier": "^2.8.8"
   },
   "scripts": {
