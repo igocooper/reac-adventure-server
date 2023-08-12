@@ -61,6 +61,10 @@ Open Prisma Studio to see schema in GUI
 npx prisma studio
 ```
 
+## Visualise Prisma Schema
+
+open [prismaliser.app](https://prismaliser.app/) and copy schema from `/prisma/schema.prisma
+
 ## Seed database
 
 Seed weapons:

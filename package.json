@@ -33,7 +33,6 @@
     "start": "node dist/index.js",
     "compile": "tsc",
     "dev": "ts-node-dev --respawn ./src/index.ts",
-    "seed": "prisma db seed --preview-feature",
     "seed-weapons": "ts-node prisma/scripts/seed-weapon.ts",
     "seed-bows": "ts-node prisma/scripts/seed-bows.ts",
     "seed-armors": "ts-node prisma/scripts/seed-armors.ts",
@@ -46,9 +45,6 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "prisma:generate": "prisma generate"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
   },
   "engines": {
     "node": "16.x"

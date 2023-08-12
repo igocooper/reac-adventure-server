@@ -8,10 +8,13 @@ datasource db {
 }
 
 model Weapon {
-  id       Int          @id @default(autoincrement())
-  name     String       @unique
+  id       Int    @id @default(autoincrement())
+  name     String @unique
   imageSrc String
-  stats    WeaponStats?
+
+  // Relational fields
+  statsId Int         @unique
+  stats   WeaponStats @relation(fields: [statsId], references: [id])
 }
 
 model WeaponStats {
@@ -24,8 +27,7 @@ model WeaponStats {
   counterAttackChance Float?
 
   // Relational fields
-  weaponId Int    @unique
-  weapon   Weapon @relation(fields: [weaponId], references: [id])
+  weapon Weapon?
 }
 
 enum HelmetType {
@@ -36,12 +38,15 @@ enum HelmetType {
 }
 
 model Helmet {
-  id       Int          @id @default(autoincrement())
-  name     String       @unique
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
   type     HelmetType
-  large    Boolean?     @default(false)
+  large    Boolean?   @default(false)
   imageSrc String
-  stats    HelmetStats?
+
+  // Relational fields
+  statsId Int         @unique
+  stats   HelmetStats @relation(fields: [statsId], references: [id])
 }
 
 model HelmetStats {
@@ -52,15 +57,21 @@ model HelmetStats {
   counterAttackChance Float?
 
   // Relational fields
-  helmetId Int    @unique
-  helmet   Helmet @relation(fields: [helmetId], references: [id])
+  helmet       Helmet?
+  resistanceId Int?        @unique
+  resitance    Resistance? @relation(fields: [resistanceId], references: [id])
 }
 
 model Armor {
-  id        Int             @id @default(autoincrement())
-  name      String          @unique
-  stats     ArmorStats?
-  imageUrls ArmorImageUrls?
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  // Relational fields
+  statsId Int        @unique
+  stats   ArmorStats @relation(fields: [statsId], references: [id])
+
+  imageUrlsId Int            @unique
+  imageUrls   ArmorImageUrls @relation(fields: [imageUrlsId], references: [id])
 }
 
 model ArmorImageUrls {
@@ -74,8 +85,7 @@ model ArmorImageUrls {
   rightLeg  String
 
   // Relational fields
-  armorId Int   @unique
-  armor   Armor @relation(fields: [armorId], references: [id])
+  armor Armor?
 }
 
 model ArmorStats {
@@ -86,15 +96,19 @@ model ArmorStats {
   counterAttackChance Float?
 
   // Relational fields
-  armorId Int   @unique
-  armor   Armor @relation(fields: [armorId], references: [id])
+  armor        Armor?
+  resistanceId Int?        @unique
+  resitance    Resistance? @relation(fields: [resistanceId], references: [id])
 }
 
 model Shield {
-  id       Int          @id @default(autoincrement())
-  name     String       @unique
+  id       Int    @id @default(autoincrement())
+  name     String @unique
   imageSrc String
-  stats    ShieldStats?
+
+  // Relational fields
+  statsId Int         @unique
+  stats   ShieldStats @relation(fields: [statsId], references: [id])
 }
 
 model ShieldStats {
@@ -105,15 +119,20 @@ model ShieldStats {
   counterAttackChance Float?
 
   // Relational fields
-  shieldId Int    @unique
-  shield   Shield @relation(fields: [shieldId], references: [id])
+  shield       Shield?
+  resistanceId Int?        @unique
+  resitance    Resistance? @relation(fields: [resistanceId], references: [id])
 }
 
 model Bow {
-  id        Int           @id @default(autoincrement())
-  name      String        @unique
-  imageUrls BowImageUrls?
-  stats     BowStats?
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  // Relational fields
+  ImageUrlId Int          @unique
+  imageUrls  BowImageUrls @relation(fields: [ImageUrlId], references: [id])
+  statsId    Int          @unique
+  stats      BowStats     @relation(fields: [statsId], references: [id])
 }
 
 model BowImageUrls {
@@ -125,8 +144,7 @@ model BowImageUrls {
   arrow          String
 
   // Relational fields
-  bowId Int @unique
-  bow   Bow @relation(fields: [bowId], references: [id])
+  bow Bow?
 }
 
 model BowStats {
@@ -139,6 +157,20 @@ model BowStats {
   counterAttackChance Float?
 
   // Relational fields
-  bowId Int @unique
-  bow   Bow @relation(fields: [bowId], references: [id])
+  bow Bow?
+}
+
+model Resistance {
+  id          Int          @id @default(autoincrement())
+  fire        Float?
+  water       Float?
+  earth       Float?
+  wind        Float?
+  light       Float?
+  dark        Float?
+  poison      Float?
+  blood       Float?
+  ArmorStats  ArmorStats?
+  HelmetStats HelmetStats?
+  ShieldStats ShieldStats?
 }
