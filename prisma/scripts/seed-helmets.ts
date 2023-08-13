@@ -5,8 +5,8 @@ import { createNestedObjects } from '../../factory/generators/createNestedObject
 const prisma = new PrismaClient();
 
 async function seed() {
-  await prisma.helmetStats.deleteMany({})
   await prisma.helmet.deleteMany({})
+  await prisma.helmetStats.deleteMany({})
 
   try {
     for (const helmet of helmets) {

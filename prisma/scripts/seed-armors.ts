@@ -5,8 +5,8 @@ import { createNestedObjects } from '../../factory/generators/createNestedObject
 const prisma = new PrismaClient();
 
 async function seed() {
-  await prisma.armorStats.deleteMany({})
   await prisma.armor.deleteMany({})
+  await prisma.armorStats.deleteMany({})
 
   try {
     for (const armor of armors) {
