@@ -1,6 +1,6 @@
 import Hapi from '@hapi/hapi';
 import Boom from '@hapi/boom';
-import Joi from 'joi'
+import Joi from 'joi';
 
 const plugin: Hapi.Plugin<undefined> = {
   name: 'app/weapons',
@@ -16,6 +16,23 @@ const plugin: Hapi.Plugin<undefined> = {
         }
       },
       {
+        method: 'POST',
+        path: '/weapons',
+        handler: getWeaponsByIdsHandler,
+        options: {
+          auth: false,
+          validate: {
+            payload: Joi.object({
+              ids: Joi.array().items(Joi.number().integer())
+            }),
+            failAction: (request, h, err) => {
+              // show validation errors to user https://github.com/hapijs/hapi/issues/3706
+              throw err;
+            }
+          }
+        }
+      },
+      {
         method: 'GET',
         path: '/weapons/{weaponId}',
         handler: getWeaponByIdHandler,
@@ -23,13 +40,13 @@ const plugin: Hapi.Plugin<undefined> = {
           auth: false,
           validate: {
             params: Joi.object({
-              weaponId: Joi.number().integer(),
+              weaponId: Joi.number().integer()
             }),
             failAction: (request, h, err) => {
               // show validation errors to user https://github.com/hapijs/hapi/issues/3706
-              throw err
-            },
-          },
+              throw err;
+            }
+          }
         }
       }
     ]);
@@ -52,6 +69,33 @@ const getWeaponsHandler = async (
   }
 };
 
+type WeaponsInput = {
+  ids: number[];
+};
+
+const getWeaponsByIdsHandler = async (
+  request: Hapi.Request,
+  h: Hapi.ResponseToolkit
+) => {
+  const { prisma } = request.server.app;
+  const { ids } = request.payload as WeaponsInput;
+
+  try {
+    const weapons = await prisma.weapon.findMany({
+      where: {
+        id: {
+          in: ids
+        }
+      }
+    });
+
+    return h.response(weapons).code(200);
+  } catch (error) {
+    request.log('error', error);
+    return Boom.badImplementation('failed to fetch weapons');
+  }
+};
+
 const getWeaponByIdHandler = async (
   request: Hapi.Request,
   h: Hapi.ResponseToolkit
@@ -61,7 +105,10 @@ const getWeaponByIdHandler = async (
 
   try {
     const weapon = await prisma.weapon.findUnique({
-      where: { id: parseInt(weaponId, 10) }
+      where: { id: parseInt(weaponId, 10) },
+      include: {
+        stats: true
+      }
     });
 
     if (!weapon) {
