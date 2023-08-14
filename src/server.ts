@@ -1,9 +1,12 @@
 import Hapi from '@hapi/hapi';
 import dotenv from 'dotenv';
 import hapiPino from 'hapi-pino';
-import statusPlugin from './plugin/status';
-import prismaPlugin from './plugin/prisma';
-import weaponsPlugin from './plugin/weapons';
+import hapiAuthJWT from 'hapi-auth-jwt2'
+import authPlugin from './plugins/auth'
+import emailPlugin from './plugins/email'
+import statusPlugin from './plugins/status';
+import prismaPlugin from './plugins/prisma';
+import weaponsPlugin from './plugins/weapons';
 
 dotenv.config();
 
@@ -27,7 +30,14 @@ export async function createServer(): Promise<Hapi.Server> {
     }
   });
 
-  await server.register([statusPlugin, prismaPlugin, weaponsPlugin]);
+  await server.register([
+    hapiAuthJWT,
+    authPlugin,
+    emailPlugin,
+    statusPlugin,
+    prismaPlugin,
+    weaponsPlugin
+  ]);
 
   await server.initialize();
 
