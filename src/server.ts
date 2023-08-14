@@ -1,9 +1,9 @@
 import Hapi from '@hapi/hapi';
 import dotenv from 'dotenv';
 import hapiPino from 'hapi-pino';
-import hapiAuthJWT from 'hapi-auth-jwt2'
-import authPlugin from './plugins/auth'
-import emailPlugin from './plugins/email'
+import hapiAuthJWT from 'hapi-auth-jwt2';
+import authPlugin from './plugins/auth';
+import emailPlugin from './plugins/email';
 import statusPlugin from './plugins/status';
 import prismaPlugin from './plugins/prisma';
 import weaponsPlugin from './plugins/weapons';
@@ -12,7 +12,13 @@ dotenv.config();
 
 const server: Hapi.Server = Hapi.server({
   port: process.env.PORT || 3000,
-  host: process.env.HOST || '0.0.0.0'
+  host: process.env.HOST || '0.0.0.0',
+  routes: {
+    cors: {
+      origin: ['*'],
+      headers: ['Accept', 'Content-type']
+    }
+  }
 });
 
 export async function createServer(): Promise<Hapi.Server> {

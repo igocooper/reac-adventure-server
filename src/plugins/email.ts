@@ -30,12 +30,12 @@ export default emailPlugin;
 async function sendEmailToken(email: string, token: string) {
   const msg = {
     to: email,
-    from: 'igocooper@gmail.com', // this should match email of identified sender in sendgrid admin panel
-    subject: 'Login token for the modern backend API',
-    text: `The login token for the API is: ${token}`
+    from: 'igocooper.gaming@gmail.com', // this should match email of identified sender in sendgrid admin panel
+    subject: 'Login token for signup to React Adventure',
+    text: `The login token is: ${token}`
   };
 
-  await sendgrid.send(msg);
+  await sendgrid.send(msg)
 }
 
 async function debugSendEmailToken(email: string, token: string) {
